@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
-import birthday_wisher
+from birthday_wisher import views
 
 urlpatterns = [
-    url(r'^.*', include('birthday_wisher.urls'))
+    url(r'', include('birthday_wisher.urls'))
 ]

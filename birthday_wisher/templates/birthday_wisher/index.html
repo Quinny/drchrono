@@ -1,17 +1,9 @@
-<html>
+{% extends "birthday_wisher/base.html" %}
 
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-    <a href="https://drchrono.com/o/authorize?client_id={{ client_id }}&response_type=code">
-        <button class="btn btn-primary">
-            Sign in with Dr. Chrono!
-        </button>
-    </a>
-</body>
-
-
-</html>
+{% block content %}
+<a href="https://drchrono.com/o/authorize?client_id={{ client_id }}&response_type=code">
+    <button class="btn btn-primary">
+        Sign in with Dr. Chrono!
+    </button>
+</a>
+{% endblock %}

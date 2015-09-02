@@ -1,0 +1,9 @@
+{% extends "birthday_wisher/base.html" %}
+
+{% block content %}
+<ul>
+{% for person in patients %}
+    <li> {{ person.first_name }} {{person.last_name}}- {{ person.date_of_birth }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

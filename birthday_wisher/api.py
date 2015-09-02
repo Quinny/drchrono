@@ -69,3 +69,13 @@ def get_patients(doctor, filters = {}):
             break
         resp = request.get(ret["next"], headers=headers, params=filters).json()
     return ret
+
+# gets a list of appointments for the given doctor with optional filters
+@check_refresh
+def get_appointments(doctor, filters = {}):
+    headers = {
+        "Authorization": "Bearer " + doctor.access_token
+    }
+    resp = requests.get("https://drchrono.com/api/appointments", headers=headers,
+            params=filters).json()
+    return resp["results"]

@@ -14,11 +14,35 @@ def is_birthday(person):
 def get_doctor(pk):
     return Doctor.objects.get(pk=pk)
 
+def date_range(d1, d2):
+    return d1.isoformat() + "/" + d2.isoformat()
+
+# gets todays birthdays for the given doctor
+# also adds nessesary data to each user
+def todays_birthdays(doctor):
+    patients = filter(is_birthday, api.get_patients(doctor))
+    now = datetime.datetime.now()
+    for p in patients:
+        if not p["home_phone"] and not p["email"] and not p["cell_phone"]:
+            p["has_contact"] = False
+            filters = {
+                "patient": p["id"],
+                "date_range": date_range(now, now + datetime.timedelta(days=180))
+            }
+            x = api.get_appointments(doctor, filters)
+            p["next_appointment"] = x[0]["scheduled_time"]
+
+        else:
+            p["has_contact"] = True
+    return patients
+
+# Since the dr chrono /api/patients endpoint date_of_birth filter doesn't support
+# filtering by only day and month, I have to pull all the users and check if
+# their birthday is today
 def index(req):
     if 'user' in req.session:
         d = get_doctor(req.session['user'])
-        #patients = filter(is_birthday, api.get_patients(d))
-        patients = filter(lambda x: x["date_of_birth"] is not None, api.get_patients(d))
+        patients = todays_birthdays(d)
         context = {
                 "patients": patients
         }

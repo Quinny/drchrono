@@ -35,6 +35,14 @@
             <i class="fa fa-envelope"></i>
             {{ person.email | urlize | not_provided }}
         </span>
+        <div class="reminder">
+            {% if not person.has_contact %}
+                <a href="#">
+                    Make a reminder to ask for contact information and wish {{ person.first_name }} a happy 
+                    birthday for their next appointment on {{ person.next_appointment }}
+                </a>
+            {% endif %}
+        </div>
     <hr />
 </div>
 {% endfor %}

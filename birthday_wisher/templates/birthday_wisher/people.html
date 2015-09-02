@@ -1,9 +1,41 @@
 {% extends "birthday_wisher/base.html" %}
+{% load birthday_extras %}
 
 {% block content %}
-<ul>
+<h1 class="text-center">
+    <i class="fa fa-xl fa-birthday-cake"></i>
+    Today's Birthdays
+</h1>
+<hr />
 {% for person in patients %}
-    <li> {{ person.first_name }} {{person.last_name}}- {{ person.date_of_birth }}</li>
+<div class="patient-info text-center">
+    <div class="photo">
+        <!--<img src="{{person.patient_photo}}" />-->
+        <img src="http://placehold.it/200x200">
+    </div>
+    <span class="name">
+        {{ person.first_name }} {{person.last_name}}
+    </span>
+    -
+    <span class="dob">
+        {{ person.date_of_birth | age}} years old
+    </span>
+    <div class="contact-info">
+        <span class="home-phone">
+            <i class="fa fa-phone"></i>
+            {{ person.home_phone | not_provided }}
+        </span>
+         | 
+        <span class="cell-phone">
+            <i class="fa fa-mobile"></i>
+            {{ person.cell_phone | not_provided }}
+        </span>
+         | 
+        <span class="email">
+            <i class="fa fa-envelope"></i>
+            {{ person.email | not_provided }}
+        </span>
+    <hr />
+</div>
 {% endfor %}
-</ul>
 {% endblock %}

@@ -30,7 +30,8 @@ def index(req):
 
 def auth(req):
     tokens = api.get_tokens(req.GET.get("code", ""))
-    expires = datetime.datetime.now() + datetime.timedelta(seconds=tokens["expires_in"])
+    expires = datetime.datetime.now() +\
+            datetime.timedelta(seconds=tokens["expires_in"])
     d = Doctor.objects.create(
             access_token  = tokens["access_token"],
             refresh_token = tokens["refresh_token"],

@@ -11,7 +11,7 @@
 <div class="patient-info text-center">
     <div class="photo">
         <!--<img src="{{person.patient_photo}}" />-->
-        <img src="http://placehold.it/200x200">
+        <img src="{{ person | fake_image }}" />
     </div>
     <span class="name">
         {{ person.first_name }} {{person.last_name}}
@@ -23,7 +23,7 @@
     <div class="contact-info">
         <span class="home-phone">
             <i class="fa fa-phone"></i>
-            {{ person.home_phone | not_provided }}
+            {{ person.home_phone | urlize | not_provided }}
         </span>
          | 
         <span class="cell-phone">
@@ -33,7 +33,7 @@
          | 
         <span class="email">
             <i class="fa fa-envelope"></i>
-            {{ person.email | not_provided }}
+            {{ person.email | urlize | not_provided }}
         </span>
     <hr />
 </div>

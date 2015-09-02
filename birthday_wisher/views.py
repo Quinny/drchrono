@@ -17,7 +17,8 @@ def get_doctor(pk):
 def index(req):
     if 'user' in req.session:
         d = get_doctor(req.session['user'])
-        patients = filter(is_birthday, api.get_patients(d, {}))
+        #patients = filter(is_birthday, api.get_patients(d))
+        patients = filter(lambda x: x["date_of_birth"] is not None, api.get_patients(d))
         context = {
                 "patients": patients
         }

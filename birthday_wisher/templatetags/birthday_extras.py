@@ -1,5 +1,6 @@
 from django import template
 from datetime import date, datetime
+import random
 register = template.Library()
 
 @register.filter(name='age')
@@ -11,6 +12,20 @@ def calculate_age(value):
 
 @register.filter(name='not_provided')
 def not_provided(value):
-    if len(value) > 0:
+    if value:
         return value
     return "Not provided"
+
+# Wouldn't actually be used, but all of the provided images 404, so this
+# is just a place holder
+@register.filter(name='fake_image')
+def fake_image(person):
+    genders = {
+        "Male":   "men",
+        "Female": "women",
+    }
+    if not person["gender"]:
+        person["gender"] = "Female"
+    return "http://api.randomuser.me/portraits/med/" +\
+            genders[person["gender"]] +\
+            "/" + str(person["id"] % 90) + ".jpg"

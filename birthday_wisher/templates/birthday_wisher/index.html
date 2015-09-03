@@ -1,9 +1,15 @@
 {% extends "birthday_wisher/base.html" %}
 
 {% block content %}
-<a href="https://drchrono.com/o/authorize?client_id={{ client_id }}&response_type=code">
-    <button class="btn btn-primary">
-        Sign in with Dr. Chrono!
-    </button>
-</a>
+<h1>
+    Make a special connection with your patients by wishing them a happy birthday!
+</h1>
+<hr />
+<div class="text-center">
+    <a href="https://drchrono.com/o/authorize?client_id={{ client_id }}&response_type=code">
+        <button class="btn btn-primary">
+            Sign in with Dr. Chrono!
+        </button>
+    </a>
+</div>
 {% endblock %}

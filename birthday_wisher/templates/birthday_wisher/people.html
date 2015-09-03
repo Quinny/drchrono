@@ -12,6 +12,9 @@
     Today's Birthdays
 </h1>
 <hr />
+{% if not patients %}
+No birthdays today...
+{% endif %}
 {% for person in patients %}
 <div class="patient-info text-center">
     <div class="photo">
@@ -60,12 +63,16 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Note Contents</h4>
       </div>
+      <form class="add-note">
       <div class="modal-body">
-          <textarea name="note-body" style="width:100%;height:20%;"></textarea>
+          <span class="note-date"></span>
+          <textarea class="note-body" name="note-body" style="width:100%;height:20%;"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <input type="text" class="appt-id" hidden>
+        <button type="submit" class="submit-note btn btn-primary">Save changes</button>
+      </form>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

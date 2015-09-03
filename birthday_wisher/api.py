@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime
+from django.utils import timezone
 
 client_id = "VEse61eNzmEA7onIXKGxGgwnaXLyqUJsZJ8ZlUSi"
 
@@ -31,7 +32,7 @@ def check_refresh(func):
         # maybe change all methods to take kwargs so we dont have to make this
         # assumpion?
         doctor = args[0]
-        if doctor.expires < datetime.datetime.now():
+        if doctor.expires < timezone.now():
             new_tokens = refresh_tokens(doctor)
             doctor.access_token = new_tokens["access_token"]
             doctor.refresh_token = new_tokens["refresh_token"]
@@ -54,14 +55,7 @@ def get_tokens(code):
     resp = requests.post("https://drchrono.com/o/token/", data=payload).json()
     return resp
 
-# gets the list of all patients for a given doctor with optional filtering parameters
-def get_patients(doctor, filters = {}):
-    return api_get(doctor, "https://drchrono.com/api/patients", filters)
-
-# gets a list of appointments for the given doctor with optional filters
-def get_appointments(doctor, filters = {}):
-    return api_get(doctor, "https://drchrono.com/api/appointments", filters)
-
+# Generic get request to the doctor chrono api
 @check_refresh
 def api_get(doctor, url, filters):
     headers = {
@@ -70,10 +64,27 @@ def api_get(doctor, url, filters):
     ret = []
     resp = requests.get(url, headers=headers,
             params=filters).json()
-    print resp
     while True:
         ret.extend(resp["results"])
         if resp["next"] is None:
             break
         resp = request.get(ret["next"], headers=headers, params=filters).json()
     return ret
+
+@check_refresh
+def api_patch(doctor, url, filters):
+    headers = {
+        "Authorization": "Bearer " + doctor.access_token
+    }
+    resp = requests.patch(url, headers=headers, data=filters).json()
+    return resp
+
+def get_patients(doctor, filters = {}):
+    return api_get(doctor, "https://drchrono.com/api/patients", filters)
+
+def get_appointments(doctor, filters = {}):
+    return api_get(doctor, "https://drchrono.com/api/appointments", filters)
+
+def patch_appointments(doctor, filters = {}):
+    return api_patch(doctor, "https://drchrono.com/api/appointments/" +
+            filters["id"], filters)

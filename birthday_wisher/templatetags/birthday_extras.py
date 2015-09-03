@@ -1,4 +1,5 @@
 from django import template
+from django.utils.safestring import mark_safe
 from datetime import date, datetime
 import random
 register = template.Library()
@@ -29,3 +30,9 @@ def fake_image(person):
     return "http://api.randomuser.me/portraits/med/" +\
             genders[person["gender"]] +\
             "/" + str(person["id"] % 90) + ".jpg"
+
+@register.filter(name='phonelink', is_safe=True)
+def phonelink(value):
+    if not value:
+        return value
+    return mark_safe('<a href="tel:' + value + '">' + value + '</a>')

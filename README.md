@@ -30,3 +30,9 @@ Doctors probably want at least one way to contact their patients, so I added
 a check where if the patients do not have any contact information, the doctor 
 can make a reminder to ask them on their next visit.  They can also use this opportunity 
 to wish them a belated birthday.
+
+Requirements
+-------------------
+
+* Django 1.8.4
+* Requests 2.5.3

@@ -32,12 +32,12 @@ No birthdays today...
     <div class="contact-info">
         <span class="home-phone">
             <i class="fa fa-phone"></i>
-            {{ person.home_phone | urlize | not_provided }}
+            {{ person.home_phone | phonelink | not_provided }}
         </span>
         | 
         <span class="cell-phone">
             <i class="fa fa-mobile"></i>
-            {{ person.cell_phone | not_provided }}
+            {{ person.cell_phone | phonelink | not_provided }}
         </span>
         | 
         <span class="email">

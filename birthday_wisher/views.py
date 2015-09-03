@@ -20,18 +20,20 @@ def date_range(d1, d2):
 # gets todays birthdays for the given doctor
 # also adds nessesary data to each user
 def todays_birthdays(doctor):
-    patients = filter(is_birthday, api.get_patients(doctor))
+    #patients = filter(is_birthday, api.get_patients(doctor))
+    # just for testing
+    patients = filter(lambda x: x["date_of_birth"] is not None, api.get_patients(doctor))
     now = datetime.datetime.now()
     for p in patients:
         if not p["home_phone"] and not p["email"] and not p["cell_phone"]:
             p["has_contact"] = False
-            filters = {
-                "patient": p["id"],
+            '''filters = {
+                "patient":    p["id"],
                 "date_range": date_range(now, now + datetime.timedelta(days=180))
             }
             x = api.get_appointments(doctor, filters)
-            p["next_appointment"] = x[0]["scheduled_time"]
-
+            if x:
+                p["next_appointment"] = x[0]["scheduled_time"]'''
         else:
             p["has_contact"] = True
     return patients

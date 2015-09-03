@@ -31,7 +31,7 @@ def check_refresh(func):
         # maybe change all methods to take kwargs so we dont have to make this
         # assumpion?
         doctor = args[0]
-        if doctor.expires < datetime.date.today():
+        if doctor.expires < datetime.datetime.now():
             new_tokens = refresh_tokens(doctor)
             doctor.access_token = new_tokens["access_token"]
             doctor.refresh_token = new_tokens["refresh_token"]
@@ -55,27 +55,25 @@ def get_tokens(code):
     return resp
 
 # gets the list of all patients for a given doctor with optional filtering parameters
-@check_refresh
 def get_patients(doctor, filters = {}):
+    return api_get(doctor, "https://drchrono.com/api/patients", filters)
+
+# gets a list of appointments for the given doctor with optional filters
+def get_appointments(doctor, filters = {}):
+    return api_get(doctor, "https://drchrono.com/api/appointments", filters)
+
+@check_refresh
+def api_get(doctor, url, filters):
     headers = {
         "Authorization": "Bearer " + doctor.access_token
     }
     ret = []
-    resp = requests.get("https://drchrono.com/api/patients", headers=headers,
+    resp = requests.get(url, headers=headers,
             params=filters).json()
+    print resp
     while True:
         ret.extend(resp["results"])
         if resp["next"] is None:
             break
         resp = request.get(ret["next"], headers=headers, params=filters).json()
     return ret
-
-# gets a list of appointments for the given doctor with optional filters
-@check_refresh
-def get_appointments(doctor, filters = {}):
-    headers = {
-        "Authorization": "Bearer " + doctor.access_token
-    }
-    resp = requests.get("https://drchrono.com/api/appointments", headers=headers,
-            params=filters).json()
-    return resp["results"]
